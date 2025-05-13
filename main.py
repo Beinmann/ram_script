@@ -127,6 +127,7 @@ if __name__ == "__main__":
                 if response == "y" or response == "yes":
                     valid_response = True
                 if response == "n" or response == "no":
+                    print("aborting...")
                     return
                 if not valid_response:
                     print("could not identify the response as either yes or no")
