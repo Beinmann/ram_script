@@ -61,6 +61,7 @@ if __name__ == "__main__":
     args = parse_args()
     cur_date = datetime.datetime.now().strftime("%d.%m.%Y")
     valid_mode = False
+    open(ram_path, "a").close() # create the file if it does not exist yet
 
     def load_file():
         lines = None
