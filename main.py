@@ -3,8 +3,15 @@ import pdb
 import argparse
 import datetime
 
-ram_path = "/home/ceadeus/Main/Organization/ObsidianVaults/Introspection_und_Organisation/0_most_important_pages/RAM - List.md"
-ram_path = "./test_ram_file.txt"
+
+def get_user_confirmation():
+    while (True):
+        response = input("continue (y/n): ").strip().lower()
+        if response == "y" or response == "yes":
+            return True
+        if response == "n" or response == "no":
+            return False
+        print("could not identify the response as either yes or no")
 
 
 def parse_args():
@@ -57,150 +64,153 @@ def parse_args():
     return args
 
 
-if __name__ == "__main__":
-    args = parse_args()
-    cur_date = datetime.datetime.now().strftime("%d.%m.%Y")
-    valid_mode = False
-    open(ram_path, "a").close() # create the file if it does not exist yet
+class RAM:
+    def __init__(self, args):
+        # self.ram_path = "/home/ceadeus/Main/Organization/ObsidianVaults/Introspection_und_Organisation/0_most_important_pages/RAM - List.md"
+        self.ram_path = "./test_ram_file.txt"
 
-    def load_file():
+        self.args = args
+        self.lines = None
+        self.tasks = None
+        self.cur_date = datetime.datetime.now().strftime("%d.%m.%Y")
+        open(self.ram_path, "a").close()  # create the file if it does not exist yet
+        self.load_file()
+
+    def load_file(self):
         lines = None
         tasks = []
-        with open(ram_path, 'r') as file:
+        with open(self.ram_path, 'r') as file:
             lines = file.readlines()
             for line in lines:
                 line = line.strip()
                 if (line == ""):
                     continue
-                if (line.startswith("#") and cur_date not in line):
+                if (line.startswith("#") and self.cur_date not in line):
                     break
                 if (not line.startswith("#")):
                     tasks.append(line)
         tasks = list(enumerate(tasks))
-        return (lines, tasks)
+        self.lines = lines
+        self.tasks = tasks
 
-    lines, tasks = load_file()
+    def filter_tasks(self):
+        if self.args.id is not None:
+            self.tasks = [(i, task) for (i, task) in self.tasks if i == self.args.id]
 
-    def check_tasks_empty():
-        if len(tasks) == 0:
+        if self.args.name is not None:
+            self.tasks = [(i, task) for (i, task) in self.tasks if self.args.name.upper() in task.upper()]
+
+    def show_tasks(self):
+        print(self.cur_date)
+        for i, task in self.tasks:
+            print(f"{i} {task}")
+
+    def reload_and_show_all(self):
+        self.load_file()
+        self.show_tasks()
+
+    def check_tasks_empty(self):
+        if len(self.tasks) == 0:
             print("warning: selection criteria id and or name filtered tasks so much that none were left")
             print("aborting...")
             return True
         return False
 
-    if args.id is not None:
-        tasks = [(i, task) for (i, task) in tasks if i == args.id]
+    def write_lines_to_file(self):
+        with open(self.ram_path, "w") as file:
+            file.writelines(self.lines)
 
-    if args.name is not None:
-        tasks = [(i, task) for (i, task) in tasks if args.name.upper() in task.upper()]
+    def add(self):
+        if self.args.name is None:
+            print("Error: cannot add a new ram entry without a given name")
+            return
+        self.lines.append(f" - [ ] {self.args.name}\n")
+        self.write_lines_to_file()
+        print(f"added new ram entry {self.args.name}")
 
-    def show(tasks=tasks):
-        print(cur_date)
-        for i, task in tasks:
+    def delete(self):
+        if self.check_tasks_empty():
+            return
+
+        if self.args.id is None and self.args.name is None:
+            print("Error: when deleting todos you have to provide an id or part of the name of the task")
+            print("aborting...")
+            return
+
+        print("Will delete task" + ("" if len(self.tasks) == 1 else "s"))
+        for i, task in self.tasks:
             print(f"{i} {task}")
+        if not self.args.yes:
+            if not get_user_confirmation():
+                print("aborting...")
+                return
 
-    def reload_and_show_all():
-        lines, tasks = load_file()
-        show(tasks)
+        for (i, task) in self.tasks:
+            for idx, line in enumerate(self.lines):
+                if line.strip() == task.strip():
+                    del self.lines[idx]
+                    break
+        self.write_lines_to_file()
+        print("Deleted selected task" + ("" if len(self.tasks) == 1 else "s"))
+        print()
+        self.reload_and_show_all()
 
-    if args.mode == "show":
+    def check(self):
+        if self.args.id is None and self.args.name is None:
+            print("Error: when checking off todos you have to provide an id or part of the name of the task")
+            print("aborting...")
+            return
+
+        if self.check_tasks_empty():
+            return
+
+        if len(self.tasks) != 1:
+            print("Multiple tasks selected")
+            for i, task in self.tasks:
+                print(f"{i} {task}")
+            print("check all those tasks?")
+            if not self.args.yes:
+                if not get_user_confirmation():
+                    print("aborting...")
+                    return
+
+        for i, task in self.tasks:
+            for idx, line in enumerate(self.lines):
+                if line.strip() == task.strip():
+                    if "[ ]" in line:
+                        self.lines[idx] = line.replace("[ ]", "[x]")
+                    else:
+                        self.lines[idx] = line.replace("[x]", "[ ]")
+        self.write_lines_to_file()
+        print("Checking off task" + ("" if len(self.tasks) == 1 else "s"))
+        print()
+        self.reload_and_show_all()
+
+
+if __name__ == "__main__":
+    args2 = parse_args()
+    ram = RAM(args2)
+    valid_mode = False
+
+    if args2.mode == "show":
         valid_mode = True
-        show()
+        ram.show_tasks()
 
         #     def select_random_task(tasks):
     #         return random.choice(tasks)
     #     random_task = select_random_task(tasks)
 
-    def write_lines_to_file(new_lines):
-        with open(ram_path, "w") as file:
-            file.writelines(new_lines)
-
-    def add():
-        if args.name is None:
-            print("Error: cannot add a new ram entry without a given name")
-            return
-        lines.append(f" - [ ] {args.name}\n")
-        write_lines_to_file(lines)
-        print(f"added new ram entry {args.name}")
-
-    if args.mode == 'add':
+    if args2.mode == 'add':
         valid_mode = True
-        add()
+        ram.add()
 
-    def get_user_confirmation():
-        while (True):
-            response = input("continue (y/n): ").strip().lower()
-            if response == "y" or response == "yes":
-                return True
-            if response == "n" or response == "no":
-                return False
-            print("could not identify the response as either yes or no")
-
-    def delete():
-        if check_tasks_empty():
-            return
-
-        if args.id is None and args.name is None:
-            print("Error: when deleting todos you have to provide an id or part of the name of the task")
-            print("aborting...")
-            return
-
-        print("Will delete task" + ("" if len(tasks) == 1 else "s"))
-        for i, task in tasks:
-            print(f"{i} {task}")
-        if not args.yes:
-            if not get_user_confirmation():
-                print("aborting...")
-                return
-
-        for (i, task) in tasks:
-            for idx, line in enumerate(lines):
-                if line.strip() == task.strip():
-                    del lines[idx]
-                    break
-        write_lines_to_file(lines)
-        print("Deleted selected task" + ("" if len(tasks) == 1 else "s"))
-        print()
-        reload_and_show_all()
-
-    if args.mode == 'del':
+    if args2.mode == 'del':
         valid_mode = True
-        delete()
+        ram.delete()
 
-    def check():
-        if args.id is None and args.name is None:
-            print("Error: when checking off todos you have to provide an id or part of the name of the task")
-            print("aborting...")
-            return
-
-        if check_tasks_empty():
-            return
-
-        if len(tasks) != 1:
-            print("Multiple tasks selected")
-            for i, task in tasks:
-                print(f"{i} {task}")
-            print("check all those tasks?")
-            if not args.yes:
-                if not get_user_confirmation():
-                    print("aborting...")
-                    return
-
-        for i, task in tasks:
-            for idx, line in enumerate(lines):
-                if line.strip() == task.strip():
-                    if "[ ]" in line:
-                        lines[idx] = line.replace("[ ]", "[x]")
-                    else:
-                        lines[idx] = line.replace("[x]", "[ ]")
-        write_lines_to_file(lines)
-        print("Checking off task" + ("" if len(tasks) == 1 else "s"))
-        print()
-        reload_and_show_all()
-
-    if args.mode == 'check':
+    if args2.mode == 'check':
         valid_mode = True
-        check()
+        ram.check()
 
     if not valid_mode:
         print("No valid mode selected, options are: show, add, del, check (list might be outdated)")
