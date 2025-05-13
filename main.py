@@ -68,17 +68,18 @@ if __name__ == "__main__":
                 break
             if (not line.startswith("#")):
                 tasks.append(line)
+    tasks = list(enumerate(tasks))
 
     if args.id is not None:
-        tasks = [task for (i, task) in enumerate(tasks) if i == args.id]
+        tasks = [(i, task) for (i, task) in tasks if i == args.id]
 
     if args.name is not None:
-        tasks = [task for task in tasks if args.name.upper() in task.upper()]
+        tasks = [(i, task) for (i, task) in tasks if args.name.upper() in task.upper()]
 
     if args.mode == "show":
         valid_mode = True
         print(cur_date)
-        for i, task in enumerate(tasks):
+        for i, task in tasks:
             print(f"{i} {task}")
 
     def select_random_task(tasks):
