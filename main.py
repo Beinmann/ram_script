@@ -75,6 +75,7 @@ class RAM:
         self.cur_date = datetime.datetime.now().strftime("%d.%m.%Y")
         open(self.ram_path, "a").close()  # create the file if it does not exist yet
         self.load_file()
+        self.filter_tasks()
 
     def load_file(self):
         lines = None
