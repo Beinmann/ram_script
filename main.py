@@ -92,15 +92,16 @@ if __name__ == "__main__":
 
     if args.mode == 'add':
         valid_mode = True
-        with open(ram_path, "w") as file:
-            has_added_line = False
-            for i in range(len(lines)):
-                if ("txt" in lines[i] and not has_added_line):
-                    lines[i] += "\t - [ ] Hello World\n"
-                    has_added_line = True
-                    # lines[i] = lines[i].replace("[ ]", "[x]")
-            # lines.append("apples\n")
-            file.writelines(lines)
+        has_added_line = False
+        new_lines = lines[:] # copies lines without making them related
+        for i in range(len(new_lines)):
+            if ("txt" in new_lines[i] and not has_added_line):
+                new_lines[i] += "\t - [ ] Hello World\n"
+                has_added_line = True
+                # lines[i] = lines[i].replace("[ ]", "[x]")
+        # lines.append("apples\n")
+        write_lines_to_file(new_lines)
+        print("added new sample task")
 
     if not valid_mode:
         print("No valid mode selected, options are: show, add, del, done (list might be outdated)")
