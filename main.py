@@ -145,5 +145,28 @@ if __name__ == "__main__":
         valid_mode = True
         delete()
 
+    def check():
+        if args.id is None and args.name is None:
+            print("Error: when checking off todos you have to provide an id or part of the name of the task")
+            print("aborting...")
+            return
+
+        if check_tasks_empty():
+            return
+
+        if len(tasks) != 1:
+            print("Multiple tasks selected")
+            todo()
+
+        for i, task in tasks:
+            for idx, line in enumerate(lines):
+                if line.strip() == task.strip():
+                    lines[idx] = line.replace("[ ]", "[x]")
+        write_lines_to_file(lines)
+
+    if args.mode == 'check':
+        valid_mode = True
+        check()
+
     if not valid_mode:
         print("No valid mode selected, options are: show, add, del, done (list might be outdated)")
