@@ -1,10 +1,55 @@
 import random
 import pdb
+import argparse
 
 ram_path = "/home/ceadeus/Main/Organization/ObsidianVaults/Introspection_und_Organisation/0_most_important_pages/RAM - List.md"
 ram_path = "./test_ram_file.txt"
 
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Script for showing, adding and checking off todos from a daily todo-list. Plus some more nice features"
+    )
+
+    parser.add_argument(
+        "mode",
+        help="can be type 'show' (default), 'add', 'done' or 'del'"
+    )
+
+    parser.add_argument(
+        "-n", "--name",
+        metavar="TASK",
+        help="The task name to be added, checked off, shown or deleted"
+    )
+    parser.add_argument(
+        "-i", "--id",
+        metavar="TASK_ID",
+        help="Instead of task name it is also possible to provide a task id for the show, done, and del modes"
+    )
+
+    parser.add_argument(
+        "-v", "--verbose",
+        action="store_true",
+        help="Enable verbose logging (so far unused)"
+    )
+
+    return parser.parse_args()
+
+    #     if args.verbose:
+    #         print(f"[VERBOSE] Reading from {args.input_file}")
+    #         print(f"[VERBOSE] Writing to   {args.output}")
+
+    # Your processing logic here
+    # with open(args.input_file) as fin, open(args.output, "w") as fout:
+    #     for line in fin:
+    #     fout.write(line)
+
+    if args.verbose:
+        print("[VERBOSE] Done.")
+
+
 if __name__ == "__main__":
+    args = parse_args()
     lines = None
     tasks = []
     with open(ram_path, 'r') as file:
