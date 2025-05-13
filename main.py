@@ -87,18 +87,17 @@ if __name__ == "__main__":
         with open(ram_path, "w") as file:
             file.writelines(new_lines)
 
+    def add():
+        if args.name is None:
+            print("Error: cannot add a new ram entry without a given name")
+            return
+        lines.append(f" - [ ] {args.name}")
+        write_lines_to_file(lines)
+        print(f"added new ram entry {args.name}")
+
     if args.mode == 'add':
         valid_mode = True
-        has_added_line = False
-        new_lines = lines[:] # copies lines without making them related
-        for i in range(len(new_lines)):
-            if ("txt" in new_lines[i] and not has_added_line):
-                new_lines[i] += "\t - [ ] Hello World\n"
-                has_added_line = True
-                # lines[i] = lines[i].replace("[ ]", "[x]")
-        # lines.append("apples\n")
-        write_lines_to_file(new_lines)
-        print("added new sample task")
+        add()
 
     def delete():
         if check_tasks_empty():
