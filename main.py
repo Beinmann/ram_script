@@ -86,11 +86,18 @@ if __name__ == "__main__":
     if args.name is not None:
         tasks = [(i, task) for (i, task) in tasks if args.name.upper() in task.upper()]
 
-    if args.mode == "show":
-        valid_mode = True
+    def show(tasks=tasks):
         print(cur_date)
         for i, task in tasks:
             print(f"{i} {task}")
+
+    def reload_and_show_all():
+        lines, tasks = load_file()
+        show(tasks)
+
+    if args.mode == "show":
+        valid_mode = True
+        show()
 
         #     def select_random_task(tasks):
     #         return random.choice(tasks)
