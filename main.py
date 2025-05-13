@@ -148,6 +148,8 @@ class RAM:
         self.lines[last_line_with_daily_todo] += f" - [ ] {self.args.name}\n"
         self.write_lines_to_file()
         print(f"added new ram entry {self.args.name}")
+        print()
+        self.reload_and_show_all()
 
     def delete(self):
         if self.check_tasks_empty():
