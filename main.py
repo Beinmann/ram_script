@@ -23,7 +23,7 @@ def parse_args():
         "mode",
         nargs="?",
         default="show",
-        help="RAM mode. Can be type 'show' (default), 'add', 'check' or 'del'"
+        help="RAM mode. Can be type 'show' (default), 'add', 'check', 'del' or 'random'/'rand'/'ran'"
     )
 
     parser.add_argument(
@@ -151,6 +151,10 @@ class RAM:
         print()
         self.reload_and_show_all()
 
+    def random(self):
+        self.tasks = [random.choice(self.tasks)]
+        self.show_tasks()
+
     def delete(self):
         if self.check_tasks_empty():
             return
@@ -235,5 +239,10 @@ if __name__ == "__main__":
         valid_mode = True
         ram.check()
 
+    if args2.mode == 'random' or args2.mode == 'rand' or args2.mode == 'ran':
+        valid_mode = True
+        ram.random()
+
+
     if not valid_mode:
-        print("No valid mode selected, options are: show, add, del, check (list might be outdated)")
+        print("No valid mode selected, options are: show, add, del, check, random/rand/ran")
