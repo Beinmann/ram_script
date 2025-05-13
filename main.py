@@ -50,6 +50,9 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
+    if args.mode == "show":
+        print("show")
+
     lines = None
     tasks = []
     with open(ram_path, 'r') as file:
