@@ -108,6 +108,15 @@ if __name__ == "__main__":
         valid_mode = True
         add()
 
+    def get_user_confirmation():
+        while (True):
+            response = input("continue (y/n): ").strip().lower()
+            if response == "y" or response == "yes":
+                return True
+            if response == "n" or response == "no":
+                return False
+            print("could not identify the response as either yes or no")
+
     def delete():
         if check_tasks_empty():
             return
@@ -120,16 +129,9 @@ if __name__ == "__main__":
         print("Will delete task" + ("" if len(tasks) == 1 else "s"))
         for i, task in tasks:
             print(f"{i} {task}")
-        valid_response = False
-        while (not valid_response):
-            response = input("continue (y/n): ").strip().lower()
-            if response == "y" or response == "yes":
-                valid_response = True
-            if response == "n" or response == "no":
-                print("aborting...")
-                return
-            if not valid_response:
-                print("could not identify the response as either yes or no")
+        if not get_user_confirmation():
+            print("aborting...")
+            return
 
         for (i, task) in tasks:
             for idx, line in enumerate(lines):
