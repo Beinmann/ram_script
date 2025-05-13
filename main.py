@@ -161,7 +161,10 @@ if __name__ == "__main__":
         for i, task in tasks:
             for idx, line in enumerate(lines):
                 if line.strip() == task.strip():
-                    lines[idx] = line.replace("[ ]", "[x]")
+                    if "[ ]" in line:
+                        lines[idx] = line.replace("[ ]", "[x]")
+                    else:
+                        lines[idx] = line.replace("[x]", "[ ]")
         write_lines_to_file(lines)
 
     if args.mode == 'check':
