@@ -40,6 +40,13 @@ def parse_args():
     )
 
     parser.add_argument(
+        "-y", "--yes",
+        action="store_true",
+        dest="yes",
+        help="skip confirmation"
+    )
+
+    parser.add_argument(
         "-v", "--verbose",
         action="store_true",
         help="Enable verbose logging (so far unused)"
@@ -140,9 +147,10 @@ if __name__ == "__main__":
         print("Will delete task" + ("" if len(tasks) == 1 else "s"))
         for i, task in tasks:
             print(f"{i} {task}")
-        if not get_user_confirmation():
-            print("aborting...")
-            return
+        if not args.yes:
+            if not get_user_confirmation():
+                print("aborting...")
+                return
 
         for (i, task) in tasks:
             for idx, line in enumerate(lines):
@@ -171,9 +179,10 @@ if __name__ == "__main__":
             for i, task in tasks:
                 print(f"{i} {task}")
             print("check all those tasks?")
-            if not get_user_confirmation():
-                print("aborting...")
-                return
+            if not args.yes:
+                if not get_user_confirmation():
+                    print("aborting...")
+                    return
 
         for i, task in tasks:
             for idx, line in enumerate(lines):
