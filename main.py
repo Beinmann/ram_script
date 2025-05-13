@@ -39,15 +39,6 @@ def parse_args():
 
     args = parser.parse_args()
 
-    #     if args.verbose:
-    #         print(f"[VERBOSE] Reading from {args.input_file}")
-    #         print(f"[VERBOSE] Writing to   {args.output}")
-
-    # Your processing logic here
-    # with open(args.input_file) as fin, open(args.output, "w") as fout:
-    #     for line in fin:
-    #     fout.write(line)
-
     return args
 
 
