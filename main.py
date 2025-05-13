@@ -139,13 +139,13 @@ class RAM:
             return
         last_line_with_daily_todo = 0
         for idx, line in enumerate(self.lines):
-            if line.startswith("#") and not self.cur_date in line:
-                self.lines[last_line_with_daily_todo] += f" - [ ] {self.args.name}\n"
+            if line.startswith("#") and self.cur_date not in line:
                 break
             elif line.strip() == "":
                 continue
             else:
                 last_line_with_daily_todo = idx
+        self.lines[last_line_with_daily_todo] += f" - [ ] {self.args.name}\n"
         self.write_lines_to_file()
         print(f"added new ram entry {self.args.name}")
 
