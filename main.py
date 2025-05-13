@@ -103,5 +103,17 @@ if __name__ == "__main__":
         write_lines_to_file(new_lines)
         print("added new sample task")
 
+    if args.mode == 'del':
+        valid_mode = True
+        if args.id is None and args.name is None:
+            print("Error: when deleting todos you have to provide an id or part of the name of the task")
+        else:
+            for (i, task) in tasks:
+                for idx, line in enumerate(lines):
+                    if line.strip() == task.strip():
+                        del lines[idx]
+                        break
+
+
     if not valid_mode:
         print("No valid mode selected, options are: show, add, del, done (list might be outdated)")
