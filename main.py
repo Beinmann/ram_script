@@ -71,7 +71,8 @@ if __name__ == "__main__":
 
     def check_tasks_empty():
         if len(tasks) == 0:
-            print("warning: selection criteria id and or name filtered tasks so much that none were left... aborting")
+            print("warning: selection criteria id and or name filtered tasks so much that none were left")
+            print("aborting...")
             return True
         return False
 
@@ -99,7 +100,7 @@ if __name__ == "__main__":
         if args.name is None:
             print("Error: cannot add a new ram entry without a given name")
             return
-        lines.append(f" - [ ] {args.name}")
+        lines.append(f" - [ ] {args.name}\n")
         write_lines_to_file(lines)
         print(f"added new ram entry {args.name}")
 
