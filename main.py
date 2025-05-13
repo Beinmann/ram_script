@@ -33,7 +33,7 @@ def parse_args():
         help="Enable verbose logging (so far unused)"
     )
 
-    return parser.parse_args()
+    args = parser.parse_args()
 
     #     if args.verbose:
     #         print(f"[VERBOSE] Reading from {args.input_file}")
@@ -44,8 +44,8 @@ def parse_args():
     #     for line in fin:
     #     fout.write(line)
 
-    if args.verbose:
-        print("[VERBOSE] Done.")
+    return args
+
 
 
 if __name__ == "__main__":
