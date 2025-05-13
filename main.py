@@ -156,7 +156,12 @@ if __name__ == "__main__":
 
         if len(tasks) != 1:
             print("Multiple tasks selected")
-            todo()
+            for i, task in tasks:
+                print(f"{i} {task}")
+            print("check all those tasks?")
+            if not get_user_confirmation():
+                print("aborting...")
+                return
 
         for i, task in tasks:
             for idx, line in enumerate(lines):
