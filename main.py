@@ -119,7 +119,8 @@ if __name__ == "__main__":
 
         if len(tasks) != 1:
             print("Warning: There are multiple tasks selected, do you really want to delete all of them?")
-            # TODO print these tasks
+            for i, task in tasks:
+                print(f"{i} {task}")
             valid_response = False
             while (not valid_response):
                 response = input("continue (y/n): ").strip().lower()
