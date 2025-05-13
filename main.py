@@ -137,8 +137,7 @@ if __name__ == "__main__":
                     del lines[idx]
                     break
         write_lines_to_file(lines)
-        print("Deleted selected task" + "" if len(tasks) == 1 else "s")
-
+        print("Deleted selected task" + ("" if len(tasks) == 1 else "s"))
 
     if args.mode == 'del':
         valid_mode = True
