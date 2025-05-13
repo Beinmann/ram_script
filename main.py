@@ -86,6 +86,10 @@ if __name__ == "__main__":
     #         return random.choice(tasks)
     #     random_task = select_random_task(tasks)
 
+    def write_lines_to_file(new_lines):
+        with open(ram_path, "w") as file:
+            file.writelines(new_lines)
+
     if args.mode == 'add':
         valid_mode = True
         with open(ram_path, "w") as file:
