@@ -14,6 +14,8 @@ def parse_args():
 
     parser.add_argument(
         "mode",
+        nargs="?",
+        default="show",
         help="can be type 'show' (default), 'add', 'done' or 'del'"
     )
 
