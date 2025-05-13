@@ -114,6 +114,7 @@ if __name__ == "__main__":
 
         if args.id is None and args.name is None:
             print("Error: when deleting todos you have to provide an id or part of the name of the task")
+            print("aborting...")
             return
 
         print("Will delete task" + ("" if len(tasks) == 1 else "s"))
