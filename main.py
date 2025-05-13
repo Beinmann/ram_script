@@ -24,6 +24,7 @@ def parse_args():
     )
     parser.add_argument(
         "-i", "--id",
+        type=int,
         metavar="TASK_ID",
         help="Instead of task name it is also possible to provide a task id for the show, done, and del modes"
     )
@@ -64,6 +65,12 @@ if __name__ == "__main__":
                 break
             if (not line.startswith("#")):
                 tasks.append(line)
+
+    if args.id is not None:
+        tasks = [task for (i, task) in enumerate(tasks) if i == args.id]
+
+    if args.name is not None:
+        tasks = [task for task in tasks if args.name.upper() in task.upper()]
 
     if args.mode == "show":
         print(cur_date)
