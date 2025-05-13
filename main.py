@@ -55,19 +55,23 @@ if __name__ == "__main__":
     cur_date = datetime.datetime.now().strftime("%d.%m.%Y")
     valid_mode = False
 
-    lines = None
-    tasks = []
-    with open(ram_path, 'r') as file:
-        lines = file.readlines()
-        for line in lines:
-            line = line.strip()
-            if (line == ""):
-                continue
-            if (line.startswith("#") and "cur_date" not in line):
-                break
-            if (not line.startswith("#")):
-                tasks.append(line)
-    tasks = list(enumerate(tasks))
+    def load_file():
+        lines = None
+        tasks = []
+        with open(ram_path, 'r') as file:
+            lines = file.readlines()
+            for line in lines:
+                line = line.strip()
+                if (line == ""):
+                    continue
+                if (line.startswith("#") and "cur_date" not in line):
+                    break
+                if (not line.startswith("#")):
+                    tasks.append(line)
+        tasks = list(enumerate(tasks))
+        return (lines, tasks)
+
+    lines, tasks = load_file()
 
     def check_tasks_empty():
         if len(tasks) == 0:
