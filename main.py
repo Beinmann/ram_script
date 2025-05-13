@@ -1,6 +1,7 @@
 import random
 import pdb
 import argparse
+import datetime
 
 ram_path = "/home/ceadeus/Main/Organization/ObsidianVaults/Introspection_und_Organisation/0_most_important_pages/RAM - List.md"
 ram_path = "./test_ram_file.txt"
@@ -51,6 +52,7 @@ if __name__ == "__main__":
     args = parse_args()
     if args.mode == "show":
         print("show")
+    cur_date = datetime.datetime.now().strftime("%d.%m.%Y")
 
     lines = None
     tasks = []
