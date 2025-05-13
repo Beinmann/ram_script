@@ -125,7 +125,16 @@ class RAM:
         if self.args.name is None:
             print("Error: cannot add a new ram entry without a given name")
             return
-        self.lines.append(f" - [ ] {self.args.name}\n")
+        last_line_with_daily_todo = 0
+        for idx, line in enumerate(self.lines):
+            if line.startswith("#") and not self.cur_date in line:
+                self.lines[last_line_with_daily_todo] += f" - [ ] {self.args.name}\n"
+                break
+            elif line.strip() == "":
+                continue
+            else:
+                last_line_with_daily_todo = idx
+        # self.lines.append(f" - [ ] {self.args.name}\n")
         self.write_lines_to_file()
         print(f"added new ram entry {self.args.name}")
 
