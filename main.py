@@ -16,13 +16,21 @@ def parse_args():
         "mode",
         nargs="?",
         default="show",
-        help="can be type 'show' (default), 'add', 'done' or 'del'"
+        help="RAM mode. Can be type 'show' (default), 'add', 'done' or 'del'"
+    )
+
+    parser.add_argument(
+        "name",
+        nargs="?",
+        default="",
+        help="The task name to be added, checked off, shown or deleted"
     )
 
     parser.add_argument(
         "-n", "--name",
         metavar="TASK",
-        help="The task name to be added, checked off, shown or deleted"
+        dest="name",
+        help="Flag for adding the task name. Is identical to just adding the task name as the second arg"
     )
     parser.add_argument(
         "-i", "--id",
