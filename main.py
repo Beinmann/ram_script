@@ -50,8 +50,6 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
-    if args.mode == "show":
-        print("show")
     cur_date = datetime.datetime.now().strftime("%d.%m.%Y")
 
     lines = None
@@ -62,22 +60,27 @@ if __name__ == "__main__":
             line = line.strip()
             if (line == ""):
                 continue
-            if (line.startswith("#") and "01.05.2025" not in line):
+            if (line.startswith("#") and "cur_date" not in line):
                 break
             if (not line.startswith("#")):
                 tasks.append(line)
-            print(line)
+
+    if args.mode == "show":
+        print(cur_date)
+        for task in tasks:
+            print(task)
 
     def select_random_task(tasks):
         return random.choice(tasks)
     random_task = select_random_task(tasks)
 
-    with open(ram_path, "w") as file:
-        has_added_line = False
-        for i in range(len(lines)):
-            if ("apples" in lines[i] and not has_added_line):
-                lines[i] += "\t - [ ] Hello World\n"
-                has_added_line = True
-                # lines[i] = lines[i].replace("[ ]", "[x]")
-        # lines.append("apples\n")
-        file.writelines(lines)
+    if args.mode == 'add':
+        with open(ram_path, "w") as file:
+            has_added_line = False
+            for i in range(len(lines)):
+                if ("txt" in lines[i] and not has_added_line):
+                    lines[i] += "\t - [ ] Hello World\n"
+                    has_added_line = True
+                    # lines[i] = lines[i].replace("[ ]", "[x]")
+            # lines.append("apples\n")
+            file.writelines(lines)
