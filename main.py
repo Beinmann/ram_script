@@ -152,6 +152,7 @@ class RAM:
         self.reload_and_show_all()
 
     def random(self):
+        self.tasks = [(i, task) for (i, task) in self.tasks if "[x]" not in task]
         self.tasks = [random.choice(self.tasks)]
         self.show_tasks()
 
