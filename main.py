@@ -75,6 +75,7 @@ class RAM:
         self.cur_date = datetime.datetime.now().strftime("%d.%m.%Y")
         open(self.ram_path, "a").close()  # create the file if it does not exist yet
         self.load_file()
+        self.add_daily_heading_if_not_exists()
         self.filter_tasks()
 
     def load_file(self):
@@ -93,6 +94,17 @@ class RAM:
         tasks = list(enumerate(tasks))
         self.lines = lines
         self.tasks = tasks
+
+    def add_daily_heading_if_not_exists(self):
+        todays_heading_exists = False
+        for line in self.lines:
+            if line.startswith('#') and self.cur_date in line:
+                todays_heading_exists = True
+
+        if not todays_heading_exists:
+            self.lines.insert(0, f"### {self.cur_date}\n")
+            self.write_lines_to_file()
+            self.load_file()  # reload file
 
     def filter_tasks(self):
         if self.args.id is not None:
