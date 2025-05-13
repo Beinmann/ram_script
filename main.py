@@ -169,4 +169,4 @@ if __name__ == "__main__":
         check()
 
     if not valid_mode:
-        print("No valid mode selected, options are: show, add, del, done (list might be outdated)")
+        print("No valid mode selected, options are: show, add, del, check (list might be outdated)")
