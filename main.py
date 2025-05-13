@@ -1,3 +1,6 @@
+import random
+import pdb
+
 ram_path = "/home/ceadeus/Main/Organization/ObsidianVaults/Introspection_und_Organisation/0_most_important_pages/RAM - List.md"
 ram_path = "./test_ram_file.txt"
 
