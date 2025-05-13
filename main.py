@@ -52,6 +52,7 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
     cur_date = datetime.datetime.now().strftime("%d.%m.%Y")
+    valid_mode = False
 
     lines = None
     tasks = []
@@ -73,6 +74,7 @@ if __name__ == "__main__":
         tasks = [task for task in tasks if args.name.upper() in task.upper()]
 
     if args.mode == "show":
+        valid_mode = True
         print(cur_date)
         for i, task in enumerate(tasks):
             print(f"{i} {task}")
@@ -82,6 +84,7 @@ if __name__ == "__main__":
     random_task = select_random_task(tasks)
 
     if args.mode == 'add':
+        valid_mode = True
         with open(ram_path, "w") as file:
             has_added_line = False
             for i in range(len(lines)):
@@ -91,3 +94,6 @@ if __name__ == "__main__":
                     # lines[i] = lines[i].replace("[ ]", "[x]")
             # lines.append("apples\n")
             file.writelines(lines)
+
+    if not valid_mode:
+        print("No valid mode selected, options are: show, add, del, done (list might be outdated)")
