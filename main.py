@@ -74,8 +74,8 @@ if __name__ == "__main__":
 
     if args.mode == "show":
         print(cur_date)
-        for task in tasks:
-            print(task)
+        for i, task in enumerate(tasks):
+            print(f"{i} {task}")
 
     def select_random_task(tasks):
         return random.choice(tasks)
