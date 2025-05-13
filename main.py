@@ -23,3 +23,12 @@ if __name__ == "__main__":
         return random.choice(tasks)
     random_task = select_random_task(tasks)
 
+    with open(ram_path, "w") as file:
+        has_added_line = False
+        for i in range(len(lines)):
+            if ("apples" in lines[i] and not has_added_line):
+                lines[i] += "\t - [ ] Hello World\n"
+                has_added_line = True
+                # lines[i] = lines[i].replace("[ ]", "[x]")
+        # lines.append("apples\n")
+        file.writelines(lines)
