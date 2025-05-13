@@ -160,6 +160,7 @@ if __name__ == "__main__":
                     break
         write_lines_to_file(lines)
         print("Deleted selected task" + ("" if len(tasks) == 1 else "s"))
+        print()
         reload_and_show_all()
 
     if args.mode == 'del':
@@ -193,6 +194,8 @@ if __name__ == "__main__":
                     else:
                         lines[idx] = line.replace("[x]", "[ ]")
         write_lines_to_file(lines)
+        print("Checking off task" + ("" if len(tasks) == 1 else "s"))
+        print()
         reload_and_show_all()
 
     if args.mode == 'check':
