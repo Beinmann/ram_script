@@ -22,7 +22,7 @@ def parse_args():
     parser.add_argument(
         "name",
         nargs="?",
-        default="",
+        default=None,
         help="The task name to be added, checked off, shown or deleted"
     )
 
