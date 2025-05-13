@@ -82,9 +82,9 @@ if __name__ == "__main__":
         for i, task in tasks:
             print(f"{i} {task}")
 
-    def select_random_task(tasks):
-        return random.choice(tasks)
-    random_task = select_random_task(tasks)
+        #     def select_random_task(tasks):
+    #         return random.choice(tasks)
+    #     random_task = select_random_task(tasks)
 
     if args.mode == 'add':
         valid_mode = True
