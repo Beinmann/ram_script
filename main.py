@@ -134,7 +134,6 @@ class RAM:
                 continue
             else:
                 last_line_with_daily_todo = idx
-        # self.lines.append(f" - [ ] {self.args.name}\n")
         self.write_lines_to_file()
         print(f"added new ram entry {self.args.name}")
 
