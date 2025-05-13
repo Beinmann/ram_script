@@ -16,7 +16,7 @@ def parse_args():
         "mode",
         nargs="?",
         default="show",
-        help="RAM mode. Can be type 'show' (default), 'add', 'done' or 'del'"
+        help="RAM mode. Can be type 'show' (default), 'add', 'check' or 'del'"
     )
 
     parser.add_argument(
