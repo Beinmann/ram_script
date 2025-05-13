@@ -116,20 +116,19 @@ if __name__ == "__main__":
             print("Error: when deleting todos you have to provide an id or part of the name of the task")
             return
 
-        if len(tasks) != 1:
-            print("Warning: There are multiple tasks selected, do you really want to delete all of them?")
-            for i, task in tasks:
-                print(f"{i} {task}")
-            valid_response = False
-            while (not valid_response):
-                response = input("continue (y/n): ").strip().lower()
-                if response == "y" or response == "yes":
-                    valid_response = True
-                if response == "n" or response == "no":
-                    print("aborting...")
-                    return
-                if not valid_response:
-                    print("could not identify the response as either yes or no")
+        print("Will delete task" + ("" if len(tasks) == 1 else "s"))
+        for i, task in tasks:
+            print(f"{i} {task}")
+        valid_response = False
+        while (not valid_response):
+            response = input("continue (y/n): ").strip().lower()
+            if response == "y" or response == "yes":
+                valid_response = True
+            if response == "n" or response == "no":
+                print("aborting...")
+                return
+            if not valid_response:
+                print("could not identify the response as either yes or no")
 
         for (i, task) in tasks:
             for idx, line in enumerate(lines):
