@@ -72,7 +72,7 @@ if __name__ == "__main__":
                 line = line.strip()
                 if (line == ""):
                     continue
-                if (line.startswith("#") and "cur_date" not in line):
+                if (line.startswith("#") and cur_date not in line):
                     break
                 if (not line.startswith("#")):
                     tasks.append(line)
