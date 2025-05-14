@@ -60,6 +60,12 @@ def parse_args():
     )
 
     parser.add_argument(
+        "-a", "--all",
+        action="store_true",
+        help="show all ram entries (or at least from the specified date until now if --prev or --date (WIP) are set"
+    )
+
+    parser.add_argument(
         "-v", "--verbose",
         action="store_true",
         help="Enable verbose logging (so far unused)"
@@ -80,6 +86,8 @@ class RAM:
         self.tasks = None
         if self.args.prev:
             self.cur_date = (datetime.now() - timedelta(days=1)).strftime("%d.%m.%Y")
+        elif self.args.all:
+            self.cur_date = (datetime.now() - timedelta(days=100000)).strftime("%d.%m.%Y") # this is a slight hack. It just sets the destination date hundredthousand days in the past and since args.all is set, it will collect all entries from that date until now
         else:
             self.cur_date = datetime.now().strftime("%d.%m.%Y")
         open(self.ram_path, "a").close()  # create the file if it does not exist yet
@@ -88,27 +96,27 @@ class RAM:
         self.filter_tasks()
 
     def load_file(self):
-        lines = None
-        tasks = []
         with open(self.ram_path, 'r') as file:
-            lines = file.readlines()
-            found_todays_heading = False
-            for line in lines:
-                line = line.strip()
-                if (line == ""):
-                    continue
-                if (line.startswith("#")):
-                    if self.cur_date not in line:
-                        if found_todays_heading:
-                            break
-                    else:
-                        found_todays_heading = True
-                if (not line.startswith("#")):
+            self.lines = file.readlines()
+        self.get_tasks_from_lines()
+
+    def get_tasks_from_lines(self):
+        self.tasks = []
+        found_todays_heading = False
+        for line in self.lines:
+            line = line.strip()
+            if (line == ""):
+                continue
+            if (line.startswith("#")):
+                if self.cur_date not in line:
                     if found_todays_heading:
-                        tasks.append(line)
-        tasks = list(enumerate(tasks))
-        self.lines = lines
-        self.tasks = tasks
+                        break
+                else:
+                    found_todays_heading = True
+            if (not line.startswith("#")):
+                if found_todays_heading or self.args.all:
+                    self.tasks.append(line)
+        self.tasks = list(enumerate(self.tasks))
 
     def add_daily_heading_if_not_exists(self):
         todays_heading_exists = False
