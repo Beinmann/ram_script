@@ -278,10 +278,6 @@ if __name__ == "__main__":
         valid_mode = True
         ram.show_tasks()
 
-        #     def select_random_task(tasks):
-    #         return random.choice(tasks)
-    #     random_task = select_random_task(tasks)
-
     if args.mode == 'add' or args.mode == 'a':
         valid_mode = True
         ram.add()
