@@ -174,6 +174,18 @@ class RAM:
             file.writelines(self.lines)
 
     def add(self):
+        if self.args.prev or self.args.date is not None:
+            print("Warning: you have specified the prev or date flag. But adding new ram entries will ignore that flag. Do you still want to add the new ram entry?")
+            if not get_user_confirmation():
+                print("aborting...")
+                return
+            else:
+                self.cur_date = datetime.now().strftime("%d.%m.%Y")
+                self.args.all = False
+                self.args.date = None
+                self.args.prev = False
+                self.filter_tasks()
+
         if self.args.name is None:
             print("Error: cannot add a new ram entry without a given name")
             return
