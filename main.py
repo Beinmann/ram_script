@@ -73,7 +73,7 @@ def parse_args():
 
     parser.add_argument(
         "-d", "--date",
-        help = "Format 'dd.mm.yyyy'. select a specified date to view tasks from. Or with the --all option view all tasks from that date until today. Instead of this you can also set the --prev flag to get the previous day"
+        help = "Format 'dd.mm.yyyy'. select a specified date to view tasks from. Or with the --all option view all tasks from that date until today. Instead of this you can also set the --prev flag to get the previous day."
     )
 
     args = parser.parse_args()
