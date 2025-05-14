@@ -270,11 +270,11 @@ class RAM:
 
 
 if __name__ == "__main__":
-    args2 = parse_args()
-    ram = RAM(args2)
+    args = parse_args()
+    ram = RAM(args)
     valid_mode = False
 
-    if args2.mode == "show":
+    if args.mode == "show":
         valid_mode = True
         ram.show_tasks()
 
@@ -282,19 +282,19 @@ if __name__ == "__main__":
     #         return random.choice(tasks)
     #     random_task = select_random_task(tasks)
 
-    if args2.mode == 'add':
+    if args.mode == 'add':
         valid_mode = True
         ram.add()
 
-    if args2.mode == 'del':
+    if args.mode == 'del':
         valid_mode = True
         ram.delete()
 
-    if args2.mode == 'check':
+    if args.mode == 'check':
         valid_mode = True
         ram.check()
 
-    if args2.mode == 'random' or args2.mode == 'rand' or args2.mode == 'ran':
+    if args.mode == 'random' or args.mode == 'rand' or args.mode == 'ran':
         valid_mode = True
         ram.random()
 
