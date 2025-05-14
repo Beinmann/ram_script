@@ -62,13 +62,18 @@ def parse_args():
     parser.add_argument(
         "-a", "--all",
         action="store_true",
-        help="show all ram entries (or at least from the specified date until now if --prev or --date (WIP) are set"
+        help="show all ram entries (or at least from the specified date until now if --prev or --date are set"
     )
 
     parser.add_argument(
         "-v", "--verbose",
         action="store_true",
         help="Enable verbose logging (so far unused)"
+    )
+
+    parser.add_argument(
+        "-d", "--date",
+        help = "Format 'dd.mm.yyyy'. select a specified date to view tasks from. Or with the --all option view all tasks from that date until today. Instead of this you can also set the --prev flag to get the previous day"
     )
 
     args = parser.parse_args()
@@ -84,7 +89,14 @@ class RAM:
         self.args = args
         self.lines = None
         self.tasks = None
-        if self.args.prev:
+        if self.args.date is not None:
+            self.cur_date = self.args.date
+            try:
+                datetime.strptime(self.args.date, "%d.%m.%Y")
+            except ValueError:
+                print("Error: specified date could not be parsed")
+                return
+        elif self.args.prev:
             self.cur_date = (datetime.now() - timedelta(days=1)).strftime("%d.%m.%Y")
         elif self.args.all:
             self.cur_date = (datetime.now() - timedelta(days=100000)).strftime("%d.%m.%Y") # this is a slight hack. It just sets the destination date hundredthousand days in the past and since args.all is set, it will collect all entries from that date until now
