@@ -26,7 +26,7 @@ def parse_args():
         "mode",
         nargs="?",
         default="show",
-        help="RAM mode. Can be type 'show' (default), 'add', 'check', 'del' or 'random'/'rand'/'ran'"
+        help="RAM mode. Can be type 's(how)' (default), 'a(dd)', 'c(heck)', 'd(el)' or 'r(andom)'/'rand'/'ran'"
     )
 
     parser.add_argument(
@@ -274,7 +274,7 @@ if __name__ == "__main__":
     ram = RAM(args)
     valid_mode = False
 
-    if args.mode == "show":
+    if args.mode == "show" or args.mode == 's':
         valid_mode = True
         ram.show_tasks()
 
@@ -282,19 +282,19 @@ if __name__ == "__main__":
     #         return random.choice(tasks)
     #     random_task = select_random_task(tasks)
 
-    if args.mode == 'add':
+    if args.mode == 'add' or args.mode == 'a':
         valid_mode = True
         ram.add()
 
-    if args.mode == 'del':
+    if args.mode == 'del' or args.mode == 'd':
         valid_mode = True
         ram.delete()
 
-    if args.mode == 'check':
+    if args.mode == 'check' or args.mode == 'c':
         valid_mode = True
         ram.check()
 
-    if args.mode == 'random' or args.mode == 'rand' or args.mode == 'ran':
+    if args.mode == 'random' or args.mode == 'rand' or args.mode == 'ran' or args.mode == 'r':
         valid_mode = True
         ram.random()
 
