@@ -119,13 +119,14 @@ class RAM:
         self.tasks = list(enumerate(self.tasks))
 
     def add_daily_heading_if_not_exists(self):
+        cur_date = datetime.now().strftime("%d.%m.%Y")
         todays_heading_exists = False
         for line in self.lines:
-            if line.startswith('#') and self.cur_date in line:
+            if line.startswith('#') and cur_date in line:
                 todays_heading_exists = True
 
         if not todays_heading_exists:
-            self.lines.insert(0, f"### {self.cur_date}\n")
+            self.lines.insert(0, f"### {cur_date}\n")
             self.write_lines_to_file()
             self.load_file()  # reload file
 
