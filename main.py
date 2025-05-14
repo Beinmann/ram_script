@@ -1,7 +1,7 @@
 import random
 import pdb
 import argparse
-import datetime
+from datetime import datetime, timedelta
 
 
 def get_user_confirmation():
@@ -54,6 +54,12 @@ def parse_args():
     )
 
     parser.add_argument(
+        "-p", "--prev",
+        action="store_true",
+        help="handle previous days tasks instead"
+    )
+
+    parser.add_argument(
         "-v", "--verbose",
         action="store_true",
         help="Enable verbose logging (so far unused)"
@@ -72,7 +78,10 @@ class RAM:
         self.args = args
         self.lines = None
         self.tasks = None
-        self.cur_date = datetime.datetime.now().strftime("%d.%m.%Y")
+        if self.args.prev:
+            self.cur_date = (datetime.now() - timedelta(days=1)).strftime("%d.%m.%Y")
+        else:
+            self.cur_date = datetime.now().strftime("%d.%m.%Y")
         open(self.ram_path, "a").close()  # create the file if it does not exist yet
         self.load_file()
         self.add_daily_heading_if_not_exists()
@@ -83,14 +92,20 @@ class RAM:
         tasks = []
         with open(self.ram_path, 'r') as file:
             lines = file.readlines()
+            found_todays_heading = False
             for line in lines:
                 line = line.strip()
                 if (line == ""):
                     continue
-                if (line.startswith("#") and self.cur_date not in line):
-                    break
+                if (line.startswith("#")):
+                    if self.cur_date not in line:
+                        if found_todays_heading:
+                            break
+                    else:
+                        found_todays_heading = True
                 if (not line.startswith("#")):
-                    tasks.append(line)
+                    if found_todays_heading:
+                        tasks.append(line)
         tasks = list(enumerate(tasks))
         self.lines = lines
         self.tasks = tasks
