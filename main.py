@@ -294,6 +294,5 @@ if __name__ == "__main__":
         valid_mode = True
         ram.random()
 
-
     if not valid_mode:
         print("No valid mode selected, options are: show, add, del, check, random/rand/ran")
