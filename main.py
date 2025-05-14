@@ -80,6 +80,9 @@ def parse_args():
     )
 
     args = parser.parse_args()
+    if args.prev:
+        args.date = (datetime.now() - timedelta(days=1)).strftime("%d.%m.%Y")
+        args.all = True
 
     return args
 
@@ -99,8 +102,6 @@ class RAM:
             except ValueError:
                 print("Error: specified date could not be parsed")
                 return
-        elif self.args.prev:
-            self.cur_date = (datetime.now() - timedelta(days=1)).strftime("%d.%m.%Y")
         elif self.args.all:
             self.cur_date = (datetime.now() - timedelta(days=100000)).strftime("%d.%m.%Y") # this is a slight hack. It just sets the destination date hundredthousand days in the past and since args.all is set, it will collect all entries from that date until now
         else:
@@ -177,8 +178,9 @@ class RAM:
             file.writelines(self.lines)
 
     def add(self):
-        if self.args.prev or self.args.date is not None:
-            print("Warning: you have specified the prev or date flag. But adding new ram entries will ignore that flag. Do you still want to add the new ram entry?")
+        actual_cur_date = datetime.now().strftime("%d.%m.%Y")
+        if self.cur_date != actual_cur_date:
+            print("Warning: you have selected another date than today (or are using the --all flag). Be aware that this will get ignored when adding tasks")
             if not get_user_confirmation(self.args):
                 print("aborting...")
                 return
@@ -186,7 +188,6 @@ class RAM:
                 self.cur_date = datetime.now().strftime("%d.%m.%Y")
                 self.args.all = False
                 self.args.date = None
-                self.args.prev = False
                 self.filter_tasks()
 
         if self.args.name is None:
