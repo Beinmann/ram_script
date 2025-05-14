@@ -150,7 +150,11 @@ class RAM:
             self.tasks = [(i, task) for (i, task) in self.tasks if self.args.name.upper() in task.upper()]
 
     def show_tasks(self):
-        print(self.cur_date)
+        actual_cur_date = datetime.now().strftime("%d.%m.%Y")
+        if self.args.all:
+            print(f"Showing ram entries from {self.cur_date} until today ({actual_cur_date})")
+        else:
+            print(self.cur_date)
         for i, task in self.tasks:
             print(f"{i} {task}")
 
