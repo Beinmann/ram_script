@@ -4,7 +4,10 @@ import argparse
 from datetime import datetime, timedelta
 
 
-def get_user_confirmation():
+def get_user_confirmation(args):
+    if args.yes:
+        print("Skipping confirmation because the --yes flag was set")
+        return True
     while (True):
         response = input("continue (y/n): ").strip().lower()
         if response == "y" or response == "yes":
@@ -176,7 +179,7 @@ class RAM:
     def add(self):
         if self.args.prev or self.args.date is not None:
             print("Warning: you have specified the prev or date flag. But adding new ram entries will ignore that flag. Do you still want to add the new ram entry?")
-            if not get_user_confirmation():
+            if not get_user_confirmation(self.args):
                 print("aborting...")
                 return
             else:
@@ -220,10 +223,9 @@ class RAM:
         print("Will delete task" + ("" if len(self.tasks) == 1 else "s"))
         for i, task in self.tasks:
             print(f"{i} {task}")
-        if not self.args.yes:
-            if not get_user_confirmation():
-                print("aborting...")
-                return
+        if not get_user_confirmation(self.args):
+            print("aborting...")
+            return
 
         for (i, task) in self.tasks:
             for idx, line in enumerate(self.lines):
@@ -249,10 +251,9 @@ class RAM:
             for i, task in self.tasks:
                 print(f"{i} {task}")
             print("check all those tasks?")
-            if not self.args.yes:
-                if not get_user_confirmation():
-                    print("aborting...")
-                    return
+            if not get_user_confirmation(self.args):
+                print("aborting...")
+                return
 
         for i, task in self.tasks:
             for idx, line in enumerate(self.lines):
