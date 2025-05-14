@@ -45,7 +45,7 @@ def parse_args():
     parser.add_argument(
         "-i", "--id",
         type=int,
-        metavar="TASK_ID",
+        metavar="ID",
         help="Instead of task name it is also possible to provide a task id for the show, done, and del modes"
     )
 
@@ -53,13 +53,13 @@ def parse_args():
         "-y", "--yes",
         action="store_true",
         dest="yes",
-        help="skip confirmation"
+        help="skip confirmation for deleting tasks or for checking off multiple tasks at once."
     )
 
     parser.add_argument(
         "-p", "--prev",
         action="store_true",
-        help="handle previous days tasks instead"
+        help="This is a combination of the --all flag and the --date <date> flag with the previous date as the argument because this is something that I need often. So basically it will show yesterdays and todays ram entries. This is especially useful just after 0 o'clock."
     )
 
     parser.add_argument(
