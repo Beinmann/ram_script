@@ -269,7 +269,14 @@ class RAM:
         self.reload_and_show_all()
 
     def print(self):
-        pass
+        print(self.cur_date)
+        for i, task in self.tasks:
+            done = "[x]" in task
+            task = task.replace("- [ ] ", "").replace("- [x] ", "")
+            if done:
+                print(f":white_square_box: {task}")
+            else:
+                print(f":white_check_mark: {task}")
 
 
 if __name__ == "__main__":
