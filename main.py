@@ -26,7 +26,7 @@ def parse_args():
         "mode",
         nargs="?",
         default="show",
-        help="RAM mode. Can be type 's(how)' (default), 'a(dd)', 'c(heck)', 'd(el)' or 'r(andom)'/'rand'/'ran'"
+        help="RAM mode. Can be type 's(how)' (default), 'a(dd)', 'c(heck)', 'd(el)', 'r(and(om))' or 'p(rint)'"
     )
 
     parser.add_argument(
@@ -268,6 +268,9 @@ class RAM:
         print()
         self.reload_and_show_all()
 
+    def print(self):
+        pass
+
 
 if __name__ == "__main__":
     args = parse_args()
@@ -290,9 +293,13 @@ if __name__ == "__main__":
         valid_mode = True
         ram.check()
 
-    if args.mode == 'random' or args.mode == 'rand' or args.mode == 'ran' or args.mode == 'r':
+    if args.mode == 'random' or args.mode == 'rand' or args.mode == 'r':
         valid_mode = True
         ram.random()
 
+    if args.mode == 'print' or args.mode == 'p':
+        valid_mode = True
+        ram.print()
+
     if not valid_mode:
-        print("No valid mode selected, options are: show, add, del, check, random/rand/ran")
+        print("No valid mode selected, options are: s(how), a(dd), d(el), c(heck), r(and(om)) or p(rint)")
