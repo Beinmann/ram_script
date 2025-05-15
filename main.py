@@ -274,9 +274,9 @@ class RAM:
             done = "[x]" in task
             task = task.replace("- [ ] ", "").replace("- [x] ", "")
             if done:
-                print(f":white_square_box: {task}")
-            else:
                 print(f":white_check_mark: {task}")
+            else:
+                print(f":white_square_button: {task}")
 
 
 if __name__ == "__main__":
