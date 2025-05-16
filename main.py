@@ -59,7 +59,7 @@ def parse_args():
     parser.add_argument(
         "-p", "--prev",
         action="store_true",
-        help="This is a combination of the --all flag and the --date <date> flag with the previous date as the argument because this is something that I need often. So basically it will show yesterdays and todays ram entries. This is especially useful just after 0 o'clock."
+        help="This is a combination of the --all flag and the --date <date> flag with the previous date as the argument because this is something that I need often. So basically it will show yesterdays and todays ram entries. This is especially useful just after 0 o'clock.\n\nThis flag will be ignored if either the --all or the --date flag are set"
     )
 
     parser.add_argument(
@@ -80,9 +80,10 @@ def parse_args():
     )
 
     args = parser.parse_args()
-    if args.prev:
-        args.date = (datetime.now() - timedelta(days=1)).strftime("%d.%m.%Y")
-        args.all = True
+    if not args.date and not args.all:
+        if args.prev:
+            args.date = (datetime.now() - timedelta(days=1)).strftime("%d.%m.%Y")
+            args.all = True
 
     return args
 
