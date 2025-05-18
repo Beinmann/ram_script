@@ -32,6 +32,17 @@ def load_settings():
         }
 
 
+def str2bool(v):
+    if isinstance(v, bool):
+        return v
+    if v.lower() in ("yes", "true", "t", "1"):
+        return True
+    elif v.lower() in ("no", "false", "f", "0"):
+        return False
+    else:
+        raise argparse.ArgumentTypeError("Expected a boolean value.")
+
+
 def save_settings(settings):
     with open(SETTINGS_FILE, "w") as f:
         json.dump(settings, f, indent=2)
@@ -75,6 +86,13 @@ def parse_args():
         action="store_true",
         dest="yes",
         help="skip confirmation for deleting tasks or for checking off multiple tasks at once."
+    )
+
+    parser.add_argument(
+        "--keep-prev",
+        type=str2bool,
+        metavar="True/False",
+        help="Set whether the --prev flag should always be applied. WARNING: this setting persists between calls of the RAM script"
     )
 
     parser.add_argument(
