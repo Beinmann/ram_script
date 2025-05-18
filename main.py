@@ -119,10 +119,6 @@ def parse_args():
     )
 
     args = parser.parse_args()
-    if not args.date and not args.all:
-        if args.prev:
-            args.date = (datetime.now() - timedelta(days=1)).strftime("%d.%m.%Y")
-            args.all = True
 
     return args
 
@@ -321,6 +317,24 @@ class RAM:
 
 if __name__ == "__main__":
     args = parse_args()
+    settings = load_settings()
+
+    if args.keep_prev is not None:
+        if args.keep_prev is True:
+            settings["include_prev"] = True
+        else:
+            settings["include_prev"] = False
+        save_settings(settings)
+
+    if settings["include_prev"]:
+        args.prev = True
+
+    # Handle the --prev flag
+    if not args.date and not args.all:
+        if args.prev:
+            args.date = (datetime.now() - timedelta(days=1)).strftime("%d.%m.%Y")
+            args.all = True
+
     ram = RAM(args)
     valid_mode = False
 
