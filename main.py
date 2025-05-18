@@ -5,7 +5,9 @@ from datetime import datetime, timedelta
 import json
 from pathlib import Path
 
-SETTINGS_FILE = Path("RAM_Settings.json")
+SCRIPT_DIR = Path(__file__).resolve().parent
+
+SETTINGS_FILE = SCRIPT_DIR / "RAM_Settings.json"
 
 
 def get_user_confirmation(args):
