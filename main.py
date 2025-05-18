@@ -2,6 +2,10 @@ import random
 import pdb
 import argparse
 from datetime import datetime, timedelta
+import json
+from pathlib import Path
+
+SETTINGS_FILE = Path("RAM_Settings.json")
 
 
 def get_user_confirmation(args):
@@ -15,6 +19,23 @@ def get_user_confirmation(args):
         if response == "n" or response == "no":
             return False
         print("could not identify the response as either yes or no")
+
+
+# persistent settings
+def load_settings():
+    if SETTINGS_FILE.exists():
+        with open(SETTINGS_FILE, "r") as f:
+            return json.load(f)
+    else:
+        return {
+            "include_prev": False
+        }
+
+
+def save_settings(settings):
+    with open(SETTINGS_FILE, "w") as f:
+        json.dump(settings, f, indent=2)
+
 
 
 def parse_args():
