@@ -2,6 +2,12 @@ import random
 import pdb
 import argparse
 from datetime import datetime, timedelta
+import json
+from pathlib import Path
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+
+SETTINGS_FILE = SCRIPT_DIR / "RAM_Settings.json"
 
 
 def get_user_confirmation(args):
@@ -15,6 +21,34 @@ def get_user_confirmation(args):
         if response == "n" or response == "no":
             return False
         print("could not identify the response as either yes or no")
+
+
+# persistent settings
+def load_settings():
+    if SETTINGS_FILE.exists():
+        with open(SETTINGS_FILE, "r") as f:
+            return json.load(f)
+    else:
+        return {
+            "include_prev": False
+        }
+
+
+def str2bool(v):
+    if isinstance(v, bool):
+        return v
+    if v.lower() in ("yes", "true", "t", "1"):
+        return True
+    elif v.lower() in ("no", "false", "f", "0"):
+        return False
+    else:
+        raise argparse.ArgumentTypeError("Expected a boolean value.")
+
+
+def save_settings(settings):
+    with open(SETTINGS_FILE, "w") as f:
+        json.dump(settings, f, indent=2)
+
 
 
 def parse_args():
@@ -57,6 +91,13 @@ def parse_args():
     )
 
     parser.add_argument(
+        "--keep-prev",
+        type=str2bool,
+        metavar="True/False",
+        help="Set whether the --prev flag should always be applied. WARNING: this setting persists between calls of the RAM script"
+    )
+
+    parser.add_argument(
         "-p", "--prev",
         action="store_true",
         help="This is a combination of the --all flag and the --date <date> flag with the previous date as the argument because this is something that I need often. So basically it will show yesterdays and todays ram entries. This is especially useful just after 0 o'clock.\n\nThis flag will be ignored if either the --all or the --date flag are set"
@@ -80,10 +121,6 @@ def parse_args():
     )
 
     args = parser.parse_args()
-    if not args.date and not args.all:
-        if args.prev:
-            args.date = (datetime.now() - timedelta(days=1)).strftime("%d.%m.%Y")
-            args.all = True
 
     return args
 
@@ -282,6 +319,24 @@ class RAM:
 
 if __name__ == "__main__":
     args = parse_args()
+    settings = load_settings()
+
+    if args.keep_prev is not None:
+        if args.keep_prev is True:
+            settings["include_prev"] = True
+        else:
+            settings["include_prev"] = False
+        save_settings(settings)
+
+    if settings["include_prev"]:
+        args.prev = True
+
+    # Handle the --prev flag
+    if not args.date and not args.all:
+        if args.prev:
+            args.date = (datetime.now() - timedelta(days=1)).strftime("%d.%m.%Y")
+            args.all = True
+
     ram = RAM(args)
     valid_mode = False
 
