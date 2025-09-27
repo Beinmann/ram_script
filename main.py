@@ -125,6 +125,13 @@ def parse_args():
         action="store_true",
         help = "Hide the date from the output if this flag is set"
     )
+
+    parser.add_argument(
+        "--hide-done",
+        action="store_true",
+        help = "Do not show the done entries from ram if this flag is set. Potential duplicate (TODO)"
+    )
+
     args = parser.parse_args()
 
     return args
@@ -204,6 +211,10 @@ class RAM:
             else:
                 print(self.cur_date)
         for i, task in self.tasks:
+            if self.args.hide_done:
+                # TODO - can probably be done in a more elegant way
+                if task.startswith("- [x]"):
+                    continue
             print(f"{i} {task}")
 
     def reload_and_show_all(self):
