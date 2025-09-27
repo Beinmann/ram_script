@@ -127,7 +127,7 @@ def parse_args():
 
 class RAM:
     def __init__(self, args):
-        self.ram_path = "/home/ceadeus/Main/Organization/ObsidianVaults/Introspection_und_Organisation/0_most_important_pages/RAM - List.md"
+        self.ram_path = "/home/ceadeus/Main/MainVault/0_most_important_pages/RAM - List.md"
         # self.ram_path = "/home/ceadeus/Main/Scripts/RAM_Script_Python/test_ram_file.txt"
 
         self.args = args
