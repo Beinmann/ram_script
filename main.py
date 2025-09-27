@@ -120,6 +120,11 @@ def parse_args():
         help = "Format 'dd.mm.yyyy'. select a specified date to view tasks from. Or with the --all option view all tasks from that date until today. Instead of this you can also set the --prev flag to get the previous day."
     )
 
+    parser.add_argument(
+        "--hide-date",
+        action="store_true",
+        help = "Hide the date from the output if this flag is set"
+    )
     args = parser.parse_args()
 
     return args
@@ -193,10 +198,11 @@ class RAM:
 
     def show_tasks(self):
         actual_cur_date = datetime.now().strftime("%d.%m.%Y")
-        if self.args.all:
-            print(f"Showing ram entries from {self.cur_date} until today ({actual_cur_date})")
-        else:
-            print(self.cur_date)
+        if not self.args.hide_date:
+            if self.args.all:
+                print(f"Showing ram entries from {self.cur_date} until today ({actual_cur_date})")
+            else:
+                print(self.cur_date)
         for i, task in self.tasks:
             print(f"{i} {task}")
 
