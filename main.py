@@ -127,6 +127,12 @@ def parse_args():
     )
 
     parser.add_argument(
+        "--hide-id",
+        action="store_true",
+        help="hides ids of the todos in case you wanna use this in a script or something"
+    )
+
+    parser.add_argument(
         "--hide-done",
         action="store_true",
         help = "Do not show the done entries from ram if this flag is set. Potential duplicate (TODO)"
@@ -215,7 +221,10 @@ class RAM:
                 # TODO - can probably be done in a more elegant way
                 if task.startswith("- [x]"):
                     continue
-            print(f"{i} {task}")
+            if self.args.hide_id:
+                print(f"{task}")
+            else:
+                print(f"{i} {task}")
 
     def reload_and_show_all(self):
         self.load_file()
